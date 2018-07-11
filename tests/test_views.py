@@ -21,3 +21,11 @@ class TestViews(TestCase):
     def test_get_200_when_product_exists(self):
         response = self.client.get("/api/v1/products/1")
         self.assertEquals(response.status_code,200)
+
+    def test_get_204_when_delete_product(self):
+        response = self.client.delete("/api/v1/products/1")
+        self.assertEquals(response.status_code,204)
+        response = self.client.get("/api/v1/products")
+        products = response.json
+        self.assertEquals(len(products), 4)
+
