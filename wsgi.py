@@ -18,12 +18,30 @@ def hello():
 def get_products():
     return jsonify(the_products)
 
-@app.route('/api/v1/products/<id_product>', methods=['GET','DELETE'])
+@app.route('/api/v1/products/<id_product>', methods=['GET','DELETE','PATCH'])
 def do(id_product):
     if request.method == 'GET':
         return get_product(id_product)
-    else:
+    elif request.method == 'DELETE':
         return delete_product(id_product)
+    else:
+        try:
+            res = update_product(id_product,request.form['name'])
+            return res
+        except:
+            abort(422)
+
+
+
+def update_product(id_product,new_name):
+    if new_name:
+        for elem in the_products:
+            if elem['id'] == int(id_product):
+                elem['name'] = new_name
+                return ('', 204)
+    else:
+        abort(422)
+
 
 def delete_product(id_product):
     for elem in the_products:
