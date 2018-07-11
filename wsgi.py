@@ -13,6 +13,6 @@ def return_product:
         { 'id': 1, 'name': 'Skello' },
         { 'id': 2, 'name': 'Socialive.tv' }
     ]
-    return the_products.dumps(the_products)
+    return json.dumps(the_products)
 
 
