@@ -6,6 +6,7 @@ class TestViews(TestCase):
         app.config['TESTING'] = True
         return app
 
+
     def test_products_json(self):
         response = self.client.get("/api/v1/products")
         products = response.json
@@ -22,10 +23,16 @@ class TestViews(TestCase):
         response = self.client.get("/api/v1/products/1")
         self.assertEquals(response.status_code,200)
 
-    def test_get_204_when_delete_product(self):
-        response = self.client.delete("/api/v1/products/1")
-        self.assertEquals(response.status_code,204)
-        response = self.client.get("/api/v1/products")
-        products = response.json
-        self.assertEquals(len(products), 4)
 
+    def test_get_204_when_delete_product(self):
+        before = len(self.client.get("/api/v1/products").json)
+        response = self.client.delete("/api/v1/products/1")
+        after = len(self.client.get("/api/v1/products").json)
+        self.assertEquals(response.status_code,204)
+        self.assertEquals(before,after + 1 )
+
+
+    def test_get_201_when_creating(self):
+        response = self.client.post('/api/v1/products/', data=dict(id=6,name='chose'))
+        self.assertEquals(response.status_code,201)
+        self.assertEquals(response.json,{ 'id': 6, 'name': 'chose' })
