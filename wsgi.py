@@ -8,7 +8,7 @@ def hello():
     return "Hello World !"
 
 @app.route('/api/v1/products')
-def return_product:
+def return_product():
     the_products = [
         { 'id': 1, 'name': 'Skello' },
         { 'id': 2, 'name': 'Socialive.tv' }
